@@ -1,7 +1,7 @@
 # ml bio hw
 
 - [x] lab1
-- [ ] lab2
+- [x] lab2
 - [ ] lab3
 - [ ] lab4
 - [ ] lab5
