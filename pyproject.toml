@@ -10,7 +10,13 @@ dependencies = [
     "matplotlib>=3.9",
     "numpy>=2.0",
     "pandas>=2.2",
+    "pygam>=0.9",
+    "pysr>=1.0",
     "scikit-learn>=1.5",
     "scipy>=1.13",
+    "seaborn>=0.13",
+    "statsmodels>=0.14",
+    "ucimlrepo>=0.0.7",
+    "umap-learn>=0.5.12",
     "xlrd>=2.0.1",
 ]
