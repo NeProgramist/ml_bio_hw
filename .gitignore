@@ -3,3 +3,5 @@ uv.lock
 data/
 lightning_logs/
 logs/
+__pycache__
+*.pt

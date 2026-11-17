@@ -1,0 +1,32 @@
+Loading weights:   0%|          | 0/198 [00:00<?, ?it/s]Loading weights: 100%|██████████| 198/198 [00:00<00:00, 2525.34it/s]
+[transformers] [1mEsmModel LOAD REPORT[0m from: facebook/esm2_t12_35M_UR50D
+Key                       | Status     | 
+--------------------------+------------+-
+lm_head.layer_norm.weight | UNEXPECTED | 
+lm_head.dense.bias        | UNEXPECTED | 
+lm_head.bias              | UNEXPECTED | 
+lm_head.layer_norm.bias   | UNEXPECTED | 
+lm_head.dense.weight      | UNEXPECTED | 
+pooler.dense.weight       | MISSING    | 
+pooler.dense.bias         | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+Trainable parameters: 5,545,928 / 33,504,249 (16.55%)
+{'epoch': 1, 'seconds': 145.07006632600041, 'peak_gpu_memory_gb': 0.5764460563659668, 'train_macro_f1': 0.3822992475344932, 'train_micro_f1': 0.4544811292469688, 'train_exact_match': 0.08661457276233002, 'train_loss': 0.9472902958548429, 'val_macro_f1': 0.4284035274923699, 'val_micro_f1': 0.5237801746276323, 'val_exact_match': 0.09175672812036448, 'val_loss': 0.7611033353772196}
+{'epoch': 2, 'seconds': 144.3472705940003, 'peak_gpu_memory_gb': 0.5759410858154297, 'train_macro_f1': 0.44997236264421264, 'train_micro_f1': 0.5388345874059446, 'train_exact_match': 0.15415059874162776, 'train_loss': 0.7816691937687578, 'val_macro_f1': 0.4543137849622567, 'val_micro_f1': 0.5595825852782765, 'val_exact_match': 0.20830684467048102, 'val_loss': 0.7043663349210219}
+{'epoch': 3, 'seconds': 144.37162628500027, 'peak_gpu_memory_gb': 0.5759410858154297, 'train_macro_f1': 0.4739655929088954, 'train_micro_f1': 0.5639308683799592, 'train_exact_match': 0.21240105540897097, 'train_loss': 0.7239046149728553, 'val_macro_f1': 0.4593945074765249, 'val_micro_f1': 0.5586886749197616, 'val_exact_match': 0.21318075863530409, 'val_loss': 0.6794321343514292}
+{'epoch': 4, 'seconds': 144.37388228500004, 'peak_gpu_memory_gb': 0.5759410858154297, 'train_macro_f1': 0.4920814476223343, 'train_micro_f1': 0.5814219870728448, 'train_exact_match': 0.23330627156484676, 'train_loss': 0.6819587629526606, 'val_macro_f1': 0.47113932235362965, 'val_micro_f1': 0.5781120454814639, 'val_exact_match': 0.25047679593134137, 'val_loss': 0.6905015965694339}
+{'epoch': 5, 'seconds': 144.4533036869998, 'peak_gpu_memory_gb': 0.5759410858154297, 'train_macro_f1': 0.5089403516157769, 'train_micro_f1': 0.5977945281965382, 'train_exact_match': 0.25811853054597117, 'train_loss': 0.6467118603669777, 'val_macro_f1': 0.47426931214124934, 'val_micro_f1': 0.5707258548290342, 'val_exact_match': 0.26870099597372327, 'val_loss': 0.7005057344751909}
+{'epoch': 6, 'seconds': 144.53572181599975, 'peak_gpu_memory_gb': 0.5759410858154297, 'train_macro_f1': 0.523800380343539, 'train_micro_f1': 0.6099488742363178, 'train_exact_match': 0.2742541100060889, 'train_loss': 0.617297894492071, 'val_macro_f1': 0.48312580062218846, 'val_micro_f1': 0.5962160816529749, 'val_exact_match': 0.29540156812884083, 'val_loss': 0.7302480424124953}
+{'epoch': 7, 'seconds': 144.7949305379998, 'peak_gpu_memory_gb': 0.5759410858154297, 'train_macro_f1': 0.5425506839291576, 'train_micro_f1': 0.623249604573883, 'train_exact_match': 0.29652932819159733, 'train_loss': 0.5873874937614563, 'val_macro_f1': 0.49426501467409234, 'val_micro_f1': 0.6131303520456708, 'val_exact_match': 0.31002331002331, 'val_loss': 0.7717014479419897}
+{'epoch': 8, 'seconds': 144.50473361500008, 'peak_gpu_memory_gb': 0.5766439437866211, 'train_macro_f1': 0.559837205204289, 'train_micro_f1': 0.635388621618043, 'train_exact_match': 0.3100263852242744, 'train_loss': 0.5629460118727628, 'val_macro_f1': 0.4840204980609813, 'val_micro_f1': 0.6091494845360824, 'val_exact_match': 0.30578512396694213, 'val_loss': 0.7792046413150827}
+{'epoch': 9, 'seconds': 144.40724746899923, 'peak_gpu_memory_gb': 0.5759410858154297, 'train_macro_f1': 0.5756319710166711, 'train_micro_f1': 0.6482857612774928, 'train_exact_match': 0.3246397402070225, 'train_loss': 0.5353781536526967, 'val_macro_f1': 0.5019750269417046, 'val_micro_f1': 0.6252470681249176, 'val_exact_match': 0.3318499682136046, 'val_loss': 0.8370238219714059}
+{'epoch': 10, 'seconds': 144.26530771599937, 'peak_gpu_memory_gb': 0.5759410858154297, 'train_macro_f1': 0.5982154259243543, 'train_micro_f1': 0.6605872697428415, 'train_exact_match': 0.3393545768215953, 'train_loss': 0.5080125110251487, 'val_macro_f1': 0.5061957771193902, 'val_micro_f1': 0.631297250284338, 'val_exact_match': 0.3477431659249841, 'val_loss': 0.9004051812777809}
+{'epoch': 11, 'seconds': 144.46205186000043, 'peak_gpu_memory_gb': 0.5759410858154297, 'train_macro_f1': 0.620103986404771, 'train_micro_f1': 0.6744361481025325, 'train_exact_match': 0.3550334889385021, 'train_loss': 0.4799547128595589, 'val_macro_f1': 0.5074446532647372, 'val_micro_f1': 0.635602377093463, 'val_exact_match': 0.349862258953168, 'val_loss': 0.9484049651703104}
+{'epoch': 12, 'seconds': 144.52221559499958, 'peak_gpu_memory_gb': 0.5759410858154297, 'train_macro_f1': 0.6378626281245676, 'train_micro_f1': 0.6874569478364331, 'train_exact_match': 0.3685812867870915, 'train_loss': 0.45080963742522506, 'val_macro_f1': 0.48826317453436774, 'val_micro_f1': 0.6183665285389653, 'val_exact_match': 0.33990252172070357, 'val_loss': 0.9978880053052561}
+{'epoch': 13, 'seconds': 144.42397855199852, 'peak_gpu_memory_gb': 0.5759410858154297, 'train_macro_f1': 0.6590932425295604, 'train_micro_f1': 0.7025250119104336, 'train_exact_match': 0.3909579866044246, 'train_loss': 0.4222671809243895, 'val_macro_f1': 0.5006778084660888, 'val_micro_f1': 0.6358461752047758, 'val_exact_match': 0.36617927527018435, 'val_loss': 1.0628338825730455}
+{'epoch': 14, 'seconds': 144.38986840199868, 'peak_gpu_memory_gb': 0.5759410858154297, 'train_macro_f1': 0.6787419420699037, 'train_micro_f1': 0.7153035786087656, 'train_exact_match': 0.4049117109803126, 'train_loss': 0.39568464251725455, 'val_macro_f1': 0.4997836466317178, 'val_micro_f1': 0.6420450533154438, 'val_exact_match': 0.37613901250264886, 'val_loss': 1.1451286334156814}
+Early stopping at epoch 14: no val macro-F1 improvement for 3 epochs (best epoch 11).
+{'external_hpa_test': {'macro_f1': 0.32291616176106497, 'micro_f1': 0.5210574293527803, 'exact_match': 0.22306348281887012, 'loss': 0.9575391767256887}}
