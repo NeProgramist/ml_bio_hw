@@ -1,0 +1,49 @@
+Loading weights:   0%|          | 0/486 [00:00<?, ?it/s]Loading weights:   3%|▎         | 16/486 [00:00<00:04, 96.40it/s]Loading weights: 100%|██████████| 486/486 [00:00<00:00, 2798.38it/s]
+[transformers] [1mEsmModel LOAD REPORT[0m from: facebook/esm2_t30_150M_UR50D
+Key                       | Status     | 
+--------------------------+------------+-
+lm_head.bias              | UNEXPECTED | 
+lm_head.layer_norm.weight | UNEXPECTED | 
+lm_head.dense.weight      | UNEXPECTED | 
+lm_head.dense.bias        | UNEXPECTED | 
+lm_head.layer_norm.bias   | UNEXPECTED | 
+pooler.dense.weight       | MISSING    | 
+pooler.dense.bias         | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+Trainable parameters: 148,143,969 / 148,143,969 (100.00%)
+{'epoch': 1, 'seconds': 938.6086714979992, 'peak_gpu_memory_gb': 7.583889007568359, 'train_macro_f1': 0.4475831072582922, 'train_micro_f1': 0.5250593510946979, 'train_exact_match': 0.16379135376496853, 'train_loss': 0.8156237516462235, 'val_macro_f1': 0.4903556760265886, 'val_micro_f1': 0.5874936964195663, 'val_exact_match': 0.3038779402415766, 'val_loss': 0.6621121740121411}
+{'epoch': 2, 'seconds': 938.0345105840006, 'peak_gpu_memory_gb': 7.583103179931641, 'train_macro_f1': 0.5250856113514477, 'train_micro_f1': 0.6206385877613886, 'train_exact_match': 0.3057641566876395, 'train_loss': 0.6502631325762388, 'val_macro_f1': 0.4887671038671638, 'val_micro_f1': 0.5926208166634914, 'val_exact_match': 0.2994278448823903, 'val_loss': 0.6471000621255159}
+{'epoch': 3, 'seconds': 937.7418360109987, 'peak_gpu_memory_gb': 7.583103179931641, 'train_macro_f1': 0.5768469219456804, 'train_micro_f1': 0.6722263307790348, 'train_exact_match': 0.3803024152628374, 'train_loss': 0.5514641232971538, 'val_macro_f1': 0.5247498788479099, 'val_micro_f1': 0.6394631600352471, 'val_exact_match': 0.3507098961644416, 'val_loss': 0.6484890242240823}
+{'epoch': 4, 'seconds': 937.0430774319993, 'peak_gpu_memory_gb': 7.583103179931641, 'train_macro_f1': 0.6266080336394848, 'train_micro_f1': 0.7155891169388524, 'train_exact_match': 0.44225695149178, 'train_loss': 0.45863194912157895, 'val_macro_f1': 0.5238153568414003, 'val_micro_f1': 0.6462113866186452, 'val_exact_match': 0.3812248357702903, 'val_loss': 0.6721187191359141}
+{'epoch': 5, 'seconds': 937.2106898790007, 'peak_gpu_memory_gb': 7.583103179931641, 'train_macro_f1': 0.6932906650385379, 'train_micro_f1': 0.7623684570179036, 'train_exact_match': 0.5206515120763142, 'train_loss': 0.3730201240343909, 'val_macro_f1': 0.5638272695359283, 'val_micro_f1': 0.6777704726422675, 'val_exact_match': 0.4325068870523416, 'val_loss': 0.7548836612378068}
+{'epoch': 6, 'seconds': 937.3802148039995, 'peak_gpu_memory_gb': 7.583103179931641, 'train_macro_f1': 0.7429259108510362, 'train_micro_f1': 0.800832730544627, 'train_exact_match': 0.5881367972396996, 'train_loss': 0.3051803592121429, 'val_macro_f1': 0.5602485966760982, 'val_micro_f1': 0.6842025927042509, 'val_exact_match': 0.45793600339054885, 'val_loss': 0.8752862566177763}
+
+===== POWER OUTAGE during epoch 7 (~14:04). Epoch 6 above did not improve val macro-F1, so it was not checkpointed. Resumed from the epoch-5 best_model.pt with a fresh optimizer; epochs 6+ below were re-run. =====
+
+Loading weights:   0%|          | 0/486 [00:00<?, ?it/s]Loading weights:   3%|▎         | 16/486 [00:01<00:45, 10.43it/s]Loading weights: 100%|██████████| 486/486 [00:01<00:00, 314.97it/s]
+[transformers] [1mEsmModel LOAD REPORT[0m from: facebook/esm2_t30_150M_UR50D
+Key                       | Status     | 
+--------------------------+------------+-
+lm_head.layer_norm.bias   | UNEXPECTED | 
+lm_head.dense.bias        | UNEXPECTED | 
+lm_head.dense.weight      | UNEXPECTED | 
+lm_head.bias              | UNEXPECTED | 
+lm_head.layer_norm.weight | UNEXPECTED | 
+pooler.dense.bias         | MISSING    | 
+pooler.dense.weight       | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+Trainable parameters: 148,143,969 / 148,143,969 (100.00%)
+Resumed model weights from outputs/esm150m_full/best_model.pt (fresh optimizer state).
+Continuing at epoch 6: best val macro-F1 0.5638 at epoch 5.
+{'epoch': 6, 'seconds': 932.931529488, 'peak_gpu_memory_gb': 7.578304290771484, 'train_macro_f1': 0.7435195193518442, 'train_micro_f1': 0.796896988460456, 'train_exact_match': 0.5812360462756241, 'train_loss': 0.308455231594028, 'val_macro_f1': 0.5713177161145679, 'val_micro_f1': 0.6884368308351178, 'val_exact_match': 0.47531256622165713, 'val_loss': 0.8525148997192642}
+{'epoch': 7, 'seconds': 930.7034334859998, 'peak_gpu_memory_gb': 7.577518463134766, 'train_macro_f1': 0.7880014161466726, 'train_micro_f1': 0.8317988923253974, 'train_exact_match': 0.6498883702049929, 'train_loss': 0.24923883021779106, 'val_macro_f1': 0.5647536454069482, 'val_micro_f1': 0.6890539721043056, 'val_exact_match': 0.4625980080525535, 'val_loss': 0.9570358732881423}
+{'epoch': 8, 'seconds': 930.2093798659998, 'peak_gpu_memory_gb': 7.577518463134766, 'train_macro_f1': 0.8197977556503657, 'train_micro_f1': 0.8618150591072701, 'train_exact_match': 0.7135680941749544, 'train_loss': 0.20823506752049098, 'val_macro_f1': 0.5671380496464724, 'val_micro_f1': 0.6925280681378242, 'val_exact_match': 0.48124602670057215, 'val_loss': 1.0390070196012997}
+{'epoch': 9, 'seconds': 930.269548239, 'peak_gpu_memory_gb': 7.577518463134766, 'train_macro_f1': 0.8597919307637689, 'train_micro_f1': 0.8927213722763097, 'train_exact_match': 0.7717170692104729, 'train_loss': 0.16093392258006056, 'val_macro_f1': 0.551266089310817, 'val_micro_f1': 0.6717736262018291, 'val_exact_match': 0.4589955499046408, 'val_loss': 1.061837641382955}
+Early stopping at epoch 9: no val macro-F1 improvement for 3 epochs (best epoch 6).
+{'external_hpa_test': {'macro_f1': 0.3655879061227673, 'micro_f1': 0.5526698524828589, 'exact_match': 0.32265579499126384, 'loss': 1.054570884449786}}

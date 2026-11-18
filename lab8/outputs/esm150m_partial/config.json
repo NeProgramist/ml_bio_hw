@@ -1,0 +1,21 @@
+{
+  "data_path": "Swissprot_Train_Validation_dataset.csv",
+  "hpa_path": "hpa_testset.csv",
+  "output_dir": "outputs/esm150m_partial_last2",
+  "model_name": "facebook/esm2_t30_150M_UR50D",
+  "mode": "partial",
+  "num_unfrozen_layers": 2,
+  "max_length": 400,
+  "batch_size": 8,
+  "epochs": 50,
+  "patience": 3,
+  "learning_rate": null,
+  "seed": 42,
+  "device": "cuda",
+  "train_size": 19708,
+  "val_size": 4719,
+  "test_size": 1717,
+  "best_val_epoch": 12,
+  "epochs_run": 15,
+  "peak_gpu_memory_gb": 1.164703369140625
+}

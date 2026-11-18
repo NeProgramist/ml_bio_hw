@@ -52,11 +52,46 @@ def parse_args():
         default=None,
         help="0=frozen backbone, N=unfreeze the last N blocks, -1=full fine-tuning.",
     )
+    parser.add_argument(
+        "--lora",
+        action="store_true",
+        help="LoRA fine-tuning: freeze the backbone and train low-rank adapters + head.",
+    )
+    parser.add_argument("--lora-r", type=int, default=8)
+    parser.add_argument("--lora-alpha", type=int, default=16)
+    parser.add_argument("--lora-dropout", type=float, default=0.1)
+    parser.add_argument(
+        "--lora-target-modules",
+        nargs="+",
+        default=["query", "value"],
+        help="ESM Linear layers to adapt: query key value attention.output.dense "
+        "intermediate.dense output.dense",
+    )
     parser.add_argument("--max-length", type=int, default=400)
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--epochs", type=int, default=5)
+    parser.add_argument(
+        "--patience",
+        type=int,
+        default=3,
+        help="Stop after this many epochs without val macro-F1 improvement; 0 disables.",
+    )
     parser.add_argument("--learning-rate", type=float, default=None)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--resume-from",
+        type=Path,
+        default=None,
+        help="Model state_dict to start from (e.g. best_model.pt of an interrupted run). "
+        "The optimizer starts fresh.",
+    )
+    parser.add_argument(
+        "--resume-history",
+        type=Path,
+        default=None,
+        help="history.csv of the epochs already completed by the weights in --resume-from. "
+        "Training continues at the next epoch, and early stopping counts from that history.",
+    )
     return parser.parse_args()
 
 
@@ -123,16 +158,35 @@ class ProteinDataset(Dataset):
             row["sequence"],
             truncation=True,
             max_length=self.max_length,
-            padding="max_length",
-            return_tensors="pt",
         )
         return {
-            "input_ids": encoded["input_ids"].squeeze(0),
-            "attention_mask": encoded["attention_mask"].squeeze(0),
+            "input_ids": encoded["input_ids"],
+            "attention_mask": encoded["attention_mask"],
             "label": torch.tensor(
                 row[self.label_columns].to_numpy(dtype=np.float32), dtype=torch.float32
             ),
         }
+
+
+def make_collate_fn(tokenizer):
+    """Pad every batch only to the length of its longest protein."""
+
+    def collate(batch):
+        padded = tokenizer.pad(
+            [
+                {"input_ids": item["input_ids"], "attention_mask": item["attention_mask"]}
+                for item in batch
+            ],
+            padding="longest",
+            return_tensors="pt",
+        )
+        return {
+            "input_ids": padded["input_ids"],
+            "attention_mask": padded["attention_mask"],
+            "label": torch.stack([item["label"] for item in batch]),
+        }
+
+    return collate
 
 
 def masked_mean_pool(hidden_state, attention_mask):
@@ -202,6 +256,29 @@ def configure_trainability(model, num_unfrozen_layers):
     return model
 
 
+def apply_lora(model, args):
+    """Wrap the (already frozen) backbone with trainable LoRA adapters."""
+    from peft import LoraConfig, get_peft_model
+
+    config = LoraConfig(
+        r=args.lora_r,
+        lora_alpha=args.lora_alpha,
+        lora_dropout=args.lora_dropout,
+        target_modules=args.lora_target_modules,
+        task_type="FEATURE_EXTRACTION",
+    )
+    model.backbone = get_peft_model(model.backbone, config)
+
+    trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    total = sum(p.numel() for p in model.parameters())
+    print(
+        f"LoRA r={args.lora_r} alpha={args.lora_alpha} on {args.lora_target_modules}. "
+        f"Trainable parameters (adapters + head): {trainable:,} / {total:,} "
+        f"({100 * trainable / total:.2f}%)"
+    )
+    return model
+
+
 def collect_metrics(y_true, logits):
     probabilities = 1.0 / (1.0 + np.exp(-logits))
     predictions = (probabilities >= 0.5).astype(int)
@@ -212,7 +289,7 @@ def collect_metrics(y_true, logits):
     }
 
 
-def run_epoch(model, loader, criterion, optimizer, device, training):
+def run_epoch(model, loader, criterion, optimizer, device, training, return_outputs=False):
     model.train(training)
     if training and not any(p.requires_grad for p in model.backbone.parameters()):
         model.backbone.eval()
@@ -238,9 +315,31 @@ def run_epoch(model, loader, criterion, optimizer, device, training):
             all_labels.append(labels.detach().cpu().numpy())
             all_logits.append(logits.detach().cpu().numpy())
 
-    metrics = collect_metrics(np.vstack(all_labels), np.vstack(all_logits))
+    all_labels, all_logits = np.vstack(all_labels), np.vstack(all_logits)
+    metrics = collect_metrics(all_labels, all_logits)
     metrics["loss"] = total_loss / len(loader.dataset)
+    if return_outputs:
+        return metrics, all_labels, all_logits
     return metrics
+
+
+def build_predictions_table(frame, y_true, logits, label_columns, threshold=0.5):
+    """One row per protein: true labels, per-label probabilities and predictions."""
+    probabilities = 1.0 / (1.0 + np.exp(-logits))
+    predictions = (probabilities >= threshold).astype(int)
+    table = pd.DataFrame({"protein_id": frame["protein_id"].to_numpy()})
+    for index, label in enumerate(label_columns):
+        table[f"true_{label}"] = y_true[:, index].astype(int)
+        table[f"prob_{label}"] = probabilities[:, index]
+        table[f"pred_{label}"] = predictions[:, index]
+    table["true_labels"] = [
+        "; ".join(label for label, value in zip(label_columns, row) if value) for row in y_true
+    ]
+    table["predicted_labels"] = [
+        "; ".join(label for label, value in zip(label_columns, row) if value)
+        for row in predictions
+    ]
+    return table
 
 
 def main():
@@ -248,8 +347,12 @@ def main():
     args.num_unfrozen_layers = resolve_num_unfrozen_layers(
         args.mode, args.num_unfrozen_layers
     )
+    if args.lora and args.num_unfrozen_layers != 0:
+        raise ValueError("--lora trains adapters on a frozen backbone; drop --mode/--num-unfrozen-layers.")
     args.mode = (
-        "frozen"
+        "lora"
+        if args.lora
+        else "frozen"
         if args.num_unfrozen_layers == 0
         else "full"
         if args.num_unfrozen_layers == -1
@@ -266,21 +369,27 @@ def main():
         backbone, backbone.config.hidden_size, len(TARGET_COLUMNS)
     ).to(device)
     configure_trainability(model, args.num_unfrozen_layers)
+    if args.lora:
+        model = apply_lora(model, args).to(device)
 
+    collate_fn = make_collate_fn(tokenizer)
     train_loader = DataLoader(
         ProteinDataset(train, tokenizer, TARGET_COLUMNS, args.max_length),
         batch_size=args.batch_size,
         shuffle=True,
+        collate_fn=collate_fn,
     )
     val_loader = DataLoader(
         ProteinDataset(val, tokenizer, TARGET_COLUMNS, args.max_length),
         batch_size=args.batch_size,
         shuffle=False,
+        collate_fn=collate_fn,
     )
     test_loader = DataLoader(
         ProteinDataset(test, tokenizer, TARGET_COLUMNS, args.max_length),
         batch_size=args.batch_size,
         shuffle=False,
+        collate_fn=collate_fn,
     )
 
     positive = train[TARGET_COLUMNS].sum().to_numpy()
@@ -288,21 +397,47 @@ def main():
     criterion = nn.BCEWithLogitsLoss(
         pos_weight=torch.tensor(pos_weight, dtype=torch.float32, device=device)
     )
-    learning_rate = args.learning_rate or (1e-3 if args.mode == "frozen" else 2e-5)
+    default_learning_rates = {"frozen": 1e-3, "lora": 3e-4}
+    learning_rate = args.learning_rate or default_learning_rates.get(args.mode, 2e-5)
     optimizer = torch.optim.AdamW(
         [parameter for parameter in model.parameters() if parameter.requires_grad],
         lr=learning_rate,
     )
 
     best_val_f1 = -np.inf
+    best_epoch = 0
+    epochs_without_improvement = 0
     history = []
-    for epoch in range(1, args.epochs + 1):
+    start_epoch = 1
+    if args.resume_from is not None:
+        # Load before the loop: the file may be the same best_model.pt this run overwrites.
+        model.load_state_dict(torch.load(args.resume_from, map_location=device))
+        print(f"Resumed model weights from {args.resume_from} (fresh optimizer state).")
+    if args.resume_history is not None:
+        history = pd.read_csv(args.resume_history).to_dict("records")
+        best_row = max(history, key=lambda row: row["val_macro_f1"])
+        best_val_f1, best_epoch = best_row["val_macro_f1"], int(best_row["epoch"])
+        start_epoch = int(history[-1]["epoch"]) + 1
+        epochs_without_improvement = start_epoch - 1 - best_epoch
+        print(
+            f"Continuing at epoch {start_epoch}: best val macro-F1 {best_val_f1:.4f} "
+            f"at epoch {best_epoch}."
+        )
+
+    for epoch in range(start_epoch, args.epochs + 1):
+        if device.type == "cuda":
+            torch.cuda.reset_peak_memory_stats(device)
         started = time.perf_counter()
         train_metrics = run_epoch(model, train_loader, criterion, optimizer, device, True)
         val_metrics = run_epoch(model, val_loader, criterion, optimizer, device, False)
         row = {
             "epoch": epoch,
             "seconds": time.perf_counter() - started,
+            "peak_gpu_memory_gb": (
+                torch.cuda.max_memory_allocated(device) / 1024**3
+                if device.type == "cuda"
+                else None
+            ),
             **{f"train_{key}": value for key, value in train_metrics.items()},
             **{f"val_{key}": value for key, value in val_metrics.items()},
         }
@@ -311,17 +446,49 @@ def main():
 
         if val_metrics["macro_f1"] > best_val_f1:
             best_val_f1 = val_metrics["macro_f1"]
+            best_epoch = epoch
+            epochs_without_improvement = 0
             torch.save(model.state_dict(), args.output_dir / "best_model.pt")
+        else:
+            epochs_without_improvement += 1
+            if args.patience > 0 and epochs_without_improvement >= args.patience:
+                print(
+                    f"Early stopping at epoch {epoch}: no val macro-F1 improvement "
+                    f"for {args.patience} epochs (best epoch {best_epoch})."
+                )
+                break
 
     pd.DataFrame(history).to_csv(args.output_dir / "history.csv", index=False)
     (args.output_dir / "labels.json").write_text(json.dumps(TARGET_COLUMNS, indent=2))
     (args.output_dir / "config.json").write_text(
-        json.dumps({**vars(args), "device": str(device), "train_size": len(train), "val_size": len(val), "test_size": len(test)}, default=str, indent=2)
+        json.dumps(
+            {
+                **vars(args),
+                "device": str(device),
+                "train_size": len(train),
+                "val_size": len(val),
+                "test_size": len(test),
+                "best_val_epoch": best_epoch,
+                "epochs_run": len(history),
+                "peak_gpu_memory_gb": (
+                    max(row["peak_gpu_memory_gb"] for row in history)
+                    if device.type == "cuda"
+                    else None
+                ),
+            },
+            default=str,
+            indent=2,
+        )
     )
 
     model.load_state_dict(torch.load(args.output_dir / "best_model.pt", map_location=device))
-    test_metrics = run_epoch(model, test_loader, criterion, optimizer, device, False)
+    test_metrics, test_labels, test_logits = run_epoch(
+        model, test_loader, criterion, optimizer, device, training=False, return_outputs=True
+    )
     (args.output_dir / "test_metrics.json").write_text(json.dumps(test_metrics, indent=2))
+    build_predictions_table(test, test_labels, test_logits, TARGET_COLUMNS).to_csv(
+        args.output_dir / "test_predictions.csv", index=False
+    )
     print({"external_hpa_test": test_metrics})
 
 

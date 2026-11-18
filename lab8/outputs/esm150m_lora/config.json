@@ -1,0 +1,31 @@
+{
+  "data_path": "Swissprot_Train_Validation_dataset.csv",
+  "hpa_path": "hpa_testset.csv",
+  "output_dir": "outputs/esm150m_lora",
+  "model_name": "facebook/esm2_t30_150M_UR50D",
+  "mode": "lora",
+  "num_unfrozen_layers": 0,
+  "lora": true,
+  "lora_r": 8,
+  "lora_alpha": 16,
+  "lora_dropout": 0.1,
+  "lora_target_modules": [
+    "query",
+    "value"
+  ],
+  "max_length": 400,
+  "batch_size": 8,
+  "epochs": 50,
+  "patience": 3,
+  "learning_rate": null,
+  "seed": 42,
+  "resume_from": "outputs/esm150m_lora/best_model.pt",
+  "resume_history": "outputs/esm150m_lora/history_epochs_1_7.csv",
+  "device": "cuda",
+  "train_size": 19708,
+  "val_size": 4719,
+  "test_size": 1717,
+  "best_val_epoch": 11,
+  "epochs_run": 14,
+  "peak_gpu_memory_gb": 5.708071231842041
+}

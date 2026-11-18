@@ -1,0 +1,60 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/486 [00:00<?, ?it/s]Loading weights:   3%|▎         | 16/486 [00:00<00:04, 98.74it/s]Loading weights: 100%|██████████| 486/486 [00:00<00:00, 2862.84it/s]
+[transformers] [1mEsmModel LOAD REPORT[0m from: facebook/esm2_t30_150M_UR50D
+Key                       | Status     | 
+--------------------------+------------+-
+lm_head.layer_norm.weight | UNEXPECTED | 
+lm_head.bias              | UNEXPECTED | 
+lm_head.dense.bias        | UNEXPECTED | 
+lm_head.dense.weight      | UNEXPECTED | 
+lm_head.layer_norm.bias   | UNEXPECTED | 
+pooler.dense.bias         | MISSING    | 
+pooler.dense.weight       | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+Trainable parameters: 5,128 / 148,143,969 (0.00%)
+/mnt/w/kse/term-4/ml/ml_bio_hw/.venv/lib/python3.11/site-packages/transformers/modeling_utils.py:3303: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+LoRA r=8 alpha=16 on ['query', 'value']. Trainable parameters (adapters + head): 619,528 / 148,758,369 (0.42%)
+{'epoch': 1, 'seconds': 784.9671083769999, 'peak_gpu_memory_gb': 5.708071231842041, 'train_macro_f1': 0.43823921149245915, 'train_micro_f1': 0.5101634628966191, 'train_exact_match': 0.17226507002232597, 'train_loss': 0.8106045139617409, 'val_macro_f1': 0.4770343320904301, 'val_micro_f1': 0.5656853999405292, 'val_exact_match': 0.2746344564526383, 'val_loss': 0.6420916651588144}
+{'epoch': 2, 'seconds': 779.4953876890004, 'peak_gpu_memory_gb': 5.708071231842041, 'train_macro_f1': 0.499690791803534, 'train_micro_f1': 0.5887921135911726, 'train_exact_match': 0.2606555713415872, 'train_loss': 0.6748275466071245, 'val_macro_f1': 0.5036810951414039, 'val_micro_f1': 0.6162057877813505, 'val_exact_match': 0.3477431659249841, 'val_loss': 0.616409660939267}
+{'epoch': 3, 'seconds': 779.8300464080003, 'peak_gpu_memory_gb': 5.708071231842041, 'train_macro_f1': 0.5316251495734805, 'train_micro_f1': 0.6239528892160471, 'train_exact_match': 0.3150497259995941, 'train_loss': 0.600328367405352, 'val_macro_f1': 0.48270164422258877, 'val_micro_f1': 0.5820877084620136, 'val_exact_match': 0.3011231193049375, 'val_loss': 0.6172698728991252}
+{'epoch': 4, 'seconds': 779.2406790320001, 'peak_gpu_memory_gb': 5.708071231842041, 'train_macro_f1': 0.5627424678126779, 'train_micro_f1': 0.6534566136439672, 'train_exact_match': 0.3492490359244977, 'train_loss': 0.5349164892215624, 'val_macro_f1': 0.5148210447426629, 'val_micro_f1': 0.6198534656033197, 'val_exact_match': 0.3473193473193473, 'val_loss': 0.6287281012845812}
+{'epoch': 5, 'seconds': 779.4961814410008, 'peak_gpu_memory_gb': 5.708071231842041, 'train_macro_f1': 0.5987487177726667, 'train_micro_f1': 0.6814845088576953, 'train_exact_match': 0.3842601989039984, 'train_loss': 0.47501364715362576, 'val_macro_f1': 0.5160943635137015, 'val_micro_f1': 0.6352528184702626, 'val_exact_match': 0.3714770078406442, 'val_loss': 0.6822683968251477}
+{'epoch': 6, 'seconds': 779.5105318359983, 'peak_gpu_memory_gb': 5.708071231842041, 'train_macro_f1': 0.640128109470741, 'train_micro_f1': 0.7044527888349905, 'train_exact_match': 0.4176983965902172, 'train_loss': 0.42198266267703904, 'val_macro_f1': 0.5164650967755533, 'val_micro_f1': 0.6422566525394289, 'val_exact_match': 0.3791057427421064, 'val_loss': 0.7833369283712525}
+{'epoch': 7, 'seconds': 780.306612507, 'peak_gpu_memory_gb': 5.708071231842041, 'train_macro_f1': 0.6689780162014387, 'train_micro_f1': 0.7249408050513023, 'train_exact_match': 0.44530140044651917, 'train_loss': 0.3836376398215072, 'val_macro_f1': 0.5322323884955527, 'val_micro_f1': 0.6607330576774827, 'val_exact_match': 0.3941513032422123, 'val_loss': 0.8506893962590112}
+
+===== POWER OUTAGE during epoch 8 (~17:20). Resumed from the epoch-7 best_model.pt with a fresh optimizer; epochs 8+ below. =====
+
+Loading weights:   0%|          | 0/486 [00:00<?, ?it/s]Loading weights:   3%|▎         | 16/486 [00:01<00:45, 10.44it/s]Loading weights: 100%|██████████| 486/486 [00:01<00:00, 315.10it/s]
+[transformers] [1mEsmModel LOAD REPORT[0m from: facebook/esm2_t30_150M_UR50D
+Key                       | Status     | 
+--------------------------+------------+-
+lm_head.layer_norm.weight | UNEXPECTED | 
+lm_head.dense.weight      | UNEXPECTED | 
+lm_head.dense.bias        | UNEXPECTED | 
+lm_head.bias              | UNEXPECTED | 
+lm_head.layer_norm.bias   | UNEXPECTED | 
+pooler.dense.weight       | MISSING    | 
+pooler.dense.bias         | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+Trainable parameters: 5,128 / 148,143,969 (0.00%)
+/mnt/w/kse/term-4/ml/ml_bio_hw/.venv/lib/python3.11/site-packages/transformers/modeling_utils.py:3303: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+LoRA r=8 alpha=16 on ['query', 'value']. Trainable parameters (adapters + head): 619,528 / 148,758,369 (0.42%)
+Resumed model weights from outputs/esm150m_lora/best_model.pt (fresh optimizer state).
+Continuing at epoch 8: best val macro-F1 0.5322 at epoch 7.
+{'epoch': 8, 'seconds': 786.961190879, 'peak_gpu_memory_gb': 5.69878625869751, 'train_macro_f1': 0.6778419465103178, 'train_micro_f1': 0.7378121679064825, 'train_exact_match': 0.4629592043840065, 'train_loss': 0.3599754247911953, 'val_macro_f1': 0.542806831221877, 'val_micro_f1': 0.664741970407795, 'val_exact_match': 0.4155541428268701, 'val_loss': 0.919716678457155}
+{'epoch': 9, 'seconds': 784.3933636080001, 'peak_gpu_memory_gb': 5.69878625869751, 'train_macro_f1': 0.7293435825347703, 'train_micro_f1': 0.7639352072415436, 'train_exact_match': 0.5032981530343008, 'train_loss': 0.3088306356073999, 'val_macro_f1': 0.5334031396505899, 'val_micro_f1': 0.6641360683261552, 'val_exact_match': 0.41640178003814365, 'val_loss': 1.0669239842618867}
+{'epoch': 10, 'seconds': 784.554576774, 'peak_gpu_memory_gb': 5.69878625869751, 'train_macro_f1': 0.7364655911030902, 'train_micro_f1': 0.7688285055114074, 'train_exact_match': 0.5126344631621677, 'train_loss': 0.2989880361868156, 'val_macro_f1': 0.5158827395493955, 'val_micro_f1': 0.6459645313065508, 'val_exact_match': 0.4022038567493113, 'val_loss': 0.9491438172768677}
+{'epoch': 11, 'seconds': 784.8895273080002, 'peak_gpu_memory_gb': 5.69878625869751, 'train_macro_f1': 0.7625670026213518, 'train_micro_f1': 0.7854666481763972, 'train_exact_match': 0.5383093160138015, 'train_loss': 0.27379877267997793, 'val_macro_f1': 0.5502752089956823, 'val_micro_f1': 0.6679029745567836, 'val_exact_match': 0.42487815215087943, 'val_loss': 1.0857113046738576}
+{'epoch': 12, 'seconds': 784.7354326659997, 'peak_gpu_memory_gb': 5.69878625869751, 'train_macro_f1': 0.7569789643293355, 'train_micro_f1': 0.7884464990180915, 'train_exact_match': 0.543789324132332, 'train_loss': 0.27033296459274503, 'val_macro_f1': 0.5296911415990782, 'val_micro_f1': 0.6675061106584698, 'val_exact_match': 0.4280567916931553, 'val_loss': 1.1072540324126847}
+{'epoch': 13, 'seconds': 784.3674036589991, 'peak_gpu_memory_gb': 5.69878625869751, 'train_macro_f1': 0.7852819875913448, 'train_micro_f1': 0.8029863855950813, 'train_exact_match': 0.5677389892429471, 'train_loss': 0.24228548746225628, 'val_macro_f1': 0.5383242210177086, 'val_micro_f1': 0.6608108108108108, 'val_exact_match': 0.4289044289044289, 'val_loss': 1.1487236987877558}
+{'epoch': 14, 'seconds': 784.533462896, 'peak_gpu_memory_gb': 5.69878625869751, 'train_macro_f1': 0.7803528046858919, 'train_micro_f1': 0.8050099529656315, 'train_exact_match': 0.5751471483661458, 'train_loss': 0.24514404717271024, 'val_macro_f1': 0.521827310759384, 'val_micro_f1': 0.6599474145486416, 'val_exact_match': 0.40580631489722396, 'val_loss': 1.1188438900650293}
+Early stopping at epoch 14: no val macro-F1 improvement for 3 epochs (best epoch 11).
+{'external_hpa_test': {'macro_f1': 0.3574109935529394, 'micro_f1': 0.553493880773786, 'exact_match': 0.28829353523587653, 'loss': 1.3046551191779021}}
