@@ -5,8 +5,8 @@
 - [x] lab3
 - [x] lab4
 - [x] lab5
-- [ ] lab6
-- [-] lab7
+- [x] lab6
+- [x] lab7
 - [-] lab8
 - [ ] lab9
 - [ ] lab10
