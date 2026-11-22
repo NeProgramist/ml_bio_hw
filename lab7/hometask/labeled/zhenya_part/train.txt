@@ -1,0 +1,30 @@
+data/obj_train_data/16 open.jpg
+data/obj_train_data/18 open.jpg
+data/obj_train_data/20 open.jpg
+data/obj_train_data/21 open.jpg
+data/obj_train_data/39 open.jpg
+data/obj_train_data/41 open.jpg
+data/obj_train_data/702.jpg
+data/obj_train_data/776.jpg
+data/obj_train_data/E c 2 RAW.png
+data/obj_train_data/Plate 2 with cfu count, dark.jpg
+data/obj_train_data/Ps fluorescenes c.jpg
+data/obj_train_data/Staph 1 total count RAW.png
+data/obj_train_data/Staph 6 RAW.png
+data/obj_train_data/WIN_20240318_11_44_54_Pro.jpg
+data/obj_train_data/WIN_20240419_10_42_35_Pro.jpg
+data/obj_train_data/WIN_20240422_11_58_12_Pro.jpg
+data/obj_train_data/WIN_20240422_12_06_15_Pro.jpg
+data/obj_train_data/WIN_20240422_12_19_01_Pro.jpg
+data/obj_train_data/e coli 2.jpg
+data/obj_train_data/frame_106.png
+data/obj_train_data/frame_120.png
+data/obj_train_data/frame_276.png
+data/obj_train_data/frame_301.png
+data/obj_train_data/frame_334.png
+data/obj_train_data/frame_365.png
+data/obj_train_data/frame_407.png
+data/obj_train_data/frame_444.png
+data/obj_train_data/frame_80.png
+data/obj_train_data/frame_94.png
+data/obj_train_data/yeast .jpg

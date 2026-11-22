@@ -1,0 +1,29 @@
+data/obj_train_data/18 count.jpg
+data/obj_train_data/19 open.jpg
+data/obj_train_data/21 count.jpg
+data/obj_train_data/37 open.jpg
+data/obj_train_data/40 open.jpg
+data/obj_train_data/42 open.jpg
+data/obj_train_data/707.jpg
+data/obj_train_data/E c 1 RAW.png
+data/obj_train_data/Plate 1 with cfu count, dark.jpg
+data/obj_train_data/Ps a total count RAW.png
+data/obj_train_data/R mucilaginosa.jpg
+data/obj_train_data/Staph 3 RAW.png
+data/obj_train_data/Staph 7 RAW.png
+data/obj_train_data/WIN_20240419_10_41_58_Pro.jpg
+data/obj_train_data/WIN_20240422_11_52_26_Pro.jpg
+data/obj_train_data/WIN_20240422_11_59_08_Pro.jpg
+data/obj_train_data/WIN_20240422_12_10_56_Pro.jpg
+data/obj_train_data/WIN_20240422_12_20_09_Pro.jpg
+data/obj_train_data/frame_112.png
+data/obj_train_data/frame_180.png
+data/obj_train_data/frame_278.png
+data/obj_train_data/frame_320.png
+data/obj_train_data/frame_361.png
+data/obj_train_data/frame_393.png
+data/obj_train_data/frame_425.png
+data/obj_train_data/frame_74.png
+data/obj_train_data/frame_92.png
+data/obj_train_data/frame_97.png
+data/obj_train_data/mixed bacteria 1a.jpg
